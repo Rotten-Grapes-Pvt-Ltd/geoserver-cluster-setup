@@ -91,7 +91,7 @@ services:
         timeout: 10s
         retries: 3
       networks:
-        - gscluste
+        - gscluster
   node:
       image: kartoza/geoserver:2.25.2
       volumes:
@@ -130,7 +130,7 @@ services:
         timeout: 10s
         retries: 3
       networks:
-        - gscluste
+        - gscluster
   node2:
       image: kartoza/geoserver:2.25.2
       volumes:
@@ -169,7 +169,7 @@ services:
         timeout: 10s
         retries: 3
       networks:
-        - gscluste
+        - gscluster
   nginx:
     image: nginx:latest
     build:
@@ -192,6 +192,8 @@ services:
         condition: service_healthy
       geobroker:
         condition: service_healthy
+    networks:
+        - gscluster
   # caddy:
   #   image: caddy:latest
   #   platform: 'linux/amd64'

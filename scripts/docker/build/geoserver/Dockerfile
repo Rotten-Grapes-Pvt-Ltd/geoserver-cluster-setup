@@ -1,4 +1,4 @@
-FROM geobeyond/geoserver:2.20.6
+FROM geobeyond/geoserver
 
 USER root
 

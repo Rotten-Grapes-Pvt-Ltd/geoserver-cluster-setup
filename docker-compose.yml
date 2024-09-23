@@ -56,7 +56,7 @@ services:
     networks:
       - gscluster
   master:
-      image: geobeyond/geoserver
+      image: kartoza/geoserver:2.24.2
       volumes:
          - geoserver-cluster-data:/opt/geoserver/data_dir
          - geoserver-cluster-gwc-data:/opt/geoserver/gwc
@@ -97,7 +97,7 @@ services:
       networks:
         - gscluster
   node:
-      image: geobeyond/geoserver
+      image: kartoza/geoserver:2.24.2
       volumes:
          - geoserver-cluster-data:/opt/geoserver/data_dir
          - geoserver-cluster-gwc-data:/opt/geoserver/gwc
@@ -138,7 +138,7 @@ services:
       networks:
         - gscluster
   node2:
-      image: geobeyond/geoserver
+      image: kartoza/geoserver:2.24.2
       volumes:
          - geoserver-cluster-data:/opt/geoserver/data_dir
          - geoserver-cluster-gwc-data:/opt/geoserver/gwc

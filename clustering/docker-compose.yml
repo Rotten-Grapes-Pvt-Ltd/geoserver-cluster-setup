@@ -158,7 +158,7 @@ services:
           condition: service_started
         db:
           condition: service_healthy
-        geobroker:
+        broker1:
           condition: service_healthy
       networks:
           - gscluster

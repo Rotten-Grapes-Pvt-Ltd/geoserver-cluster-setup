@@ -55,8 +55,8 @@ services:
     master:
       image: kartoza/geoserver:2.25.2
       volumes:
-         - geo_data_dir:/opt/geoserver/data_dir
-         - geo_data_dir_gwc:/opt/geoserver/gwc
+         - ./geo_data_dir:/opt/geoserver/data_dir
+         - ./geo_data_dir_gwc:/opt/geoserver/gwc
       ports:
         - "8081:8080"
       environment:
@@ -98,8 +98,8 @@ services:
     node:
       image: kartoza/geoserver:2.25.2
       volumes:
-         - geo_data_dir:/opt/geoserver/data_dir
-         - geo_data_dir_gwc:/opt/geoserver/gwc
+         - ./geo_data_dir:/opt/geoserver/data_dir
+         - ./geo_data_dir_gwc:/opt/geoserver/gwc
       ports:
         - "8082:8080"
       environment:
@@ -143,8 +143,8 @@ services:
     node2:
       image: kartoza/geoserver:2.25.2
       volumes:
-         - geo_data_dir:/opt/geoserver/data_dir
-         - geo_data_dir_gwc:/opt/geoserver/gwc
+         - ./geo_data_dir:/opt/geoserver/data_dir
+         - ./geo_data_dir_gwc:/opt/geoserver/gwc
       ports:
         - "8083:8080"
       environment:

@@ -62,12 +62,6 @@ services:
       environment:
         - CLUSTERING=true
         - CLUSTER_DURABILITY=false
-        - DB_BACKEND=POSTGRES
-        - HOST=db
-        - POSTGRES_PORT=5432
-        - POSTGRES_DB=gis
-        - POSTGRES_USER=docker
-        - POSTGRES_PASS=docker
         - SSL_MODE=ALLOW
         - BROKER_URL=tcp://broker1:61616
         - READONLY=disabled
@@ -78,7 +72,7 @@ services:
         - GEOSERVER_ADMIN_USER=admin
         - GEOSERVER_ADMIN_PASSWORD=myawesomegeoserver
         - STABLE_EXTENSIONS=
-        - COMMUNITY_EXTENSIONS=jms-cluster-plugin
+        - COMMUNITY_EXTENSIONS=jms-cluster-plugin,mbtiles
         - SAMPLE_DATA=true
         # prevent some errors the option below
         #- ADDITIONAL_JAVA_STARTUP_OPTIONS="--add-opens=java.base/jdk.internal.misc=ALL-UNNAMED"
@@ -105,12 +99,6 @@ services:
       environment:
         - CLUSTERING=true
         - CLUSTER_DURABILITY=false
-        - DB_BACKEND=POSTGRES
-        - HOST=db
-        - POSTGRES_PORT=5432
-        - POSTGRES_DB=gis
-        - POSTGRES_USER=docker
-        - POSTGRES_PASS=docker
         - SSL_MODE=ALLOW
         - BROKER_URL=tcp://broker1:61616
         - READONLY=enabled
@@ -121,7 +109,7 @@ services:
         - GEOSERVER_ADMIN_USER=admin
         - GEOSERVER_ADMIN_PASSWORD=myawesomegeoserver
         - STABLE_EXTENSIONS=
-        - COMMUNITY_EXTENSIONS=jms-cluster-plugin
+        - COMMUNITY_EXTENSIONS=jms-cluster-plugin,mbtiles
         - SAMPLE_DATA=true
         # prevent some errors the option below
         #- ADDITIONAL_JAVA_STARTUP_OPTIONS="--add-opens=java.base/jdk.internal.misc=ALL-UNNAMED"
@@ -150,12 +138,6 @@ services:
       environment:
         - CLUSTERING=true
         - CLUSTER_DURABILITY=false
-        - DB_BACKEND=POSTGRES
-        - HOST=db
-        - POSTGRES_PORT=5432
-        - POSTGRES_DB=gis
-        - POSTGRES_USER=docker
-        - POSTGRES_PASS=docker
         - SSL_MODE=ALLOW
         - BROKER_URL=tcp://broker1:61616
         - READONLY=enabled
@@ -166,7 +148,7 @@ services:
         - GEOSERVER_ADMIN_USER=admin
         - GEOSERVER_ADMIN_PASSWORD=myawesomegeoserver
         - STABLE_EXTENSIONS=
-        - COMMUNITY_EXTENSIONS=jms-cluster-plugin
+        - COMMUNITY_EXTENSIONS=jms-cluster-plugin,mbtiles
         - SAMPLE_DATA=true
         # prevent some errors the option below
         #- ADDITIONAL_JAVA_STARTUP_OPTIONS="--add-opens=java.base/jdk.internal.misc=ALL-UNNAMED"
@@ -187,13 +169,15 @@ services:
         retries: 3
       networks:
           - gscluster
-    nginx:
-      image: nginx:latest
+    caddy:
+      image: caddy:latest
       build:
-        context: nginx
+        context: caddy
         dockerfile: Dockerfile
       ports:
-        - "80:80"
+        - 9001:9001
+        - 80:80
+        - 443:443
       healthcheck:
         test: curl --fail -s http://localhost || exit 1
         interval: 1m
@@ -201,18 +185,42 @@ services:
         start_period: 20s
         timeout: 10s
       depends_on:
-        master:
-          condition: service_started
-        node:
-          condition: service_started
-        node2:
-          condition: service_started
-        db:
-          condition: service_healthy
-        broker1:
-          condition: service_healthy
+          master:
+            condition: service_started
+          node:
+            condition: service_started
+          node2:
+            condition: service_started
+          broker1:
+            condition: service_healthy
       networks:
-          - gscluster
+        - gscluster
+    # nginx:
+    #   image: nginx:latest
+    #   build:
+    #     context: nginx
+    #     dockerfile: Dockerfile
+    #   ports:
+    #     - "80:80"
+    #   healthcheck:
+    #     test: curl --fail -s http://localhost || exit 1
+    #     interval: 1m
+    #     retries: 5
+    #     start_period: 20s
+    #     timeout: 10s
+    #   depends_on:
+    #     master:
+    #       condition: service_started
+    #     node:
+    #       condition: service_started
+    #     node2:
+    #       condition: service_started
+    #     db:
+    #       condition: service_healthy
+    #     broker1:
+    #       condition: service_healthy
+    #   networks:
+    #       - gscluster
 
    
 

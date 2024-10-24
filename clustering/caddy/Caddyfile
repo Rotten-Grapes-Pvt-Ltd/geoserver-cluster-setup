@@ -1,21 +1,19 @@
-{
-    # Turn on all debug log
-    debug
-    log {
-        output stdout
-        level DEBUG
+dev-geo.mapilio.com {
+    # Load balancing with sticky sessions
+    reverse_proxy {
+        to master:8080 node:8080 node2:8080
+        lb_policy cookie # Sticky session using cookies
+        lb_try_duration 30s
     }
-}
-:80
-reverse_proxy master:8080 node:8080 node2:8080 {
-    # header_up Host                {host}
-    # header_up Origin              {host}
-    # header_up X-Real-IP           {remote}
-    # header_up X-Forwarded-Host    {host}
-    # header_up X-Forwarded-Server  {host}
-    # header_up X-Forwarded-Port    {port}
-    # header_up X-Forwarded-For     {remote}
-    # header_up X-Forwarded-Proto   {scheme}
 
-    lb_policy cookie
+    # Automatic HTTPS with Let's Encrypt (HTTP challenge)
+    tls {
+        # No need for DNS challenge, HTTP challenge will be used
+    }
+
+    # Optional: Redirect HTTP to HTTPS
+    @http {
+        protocol http
+    }
+    redir @http https://{host}{uri}
 }

@@ -64,9 +64,10 @@ services:
         - CLUSTER_DURABILITY=false
         - SSL_MODE=ALLOW
         - BROKER_URL=tcp://broker1:61616
-        - READONLY=disabled
+        - READONLY=enabled
         - TOGGLE_MASTER=true
         - TOGGLE_SLAVE=true
+        - EMBEDDED_BROKER=disabled
         - RUN_AS_ROOT=TRUE
         - GEOSERVER_ADMIN_USER=admin
         - GEOSERVER_ADMIN_PASSWORD=myawesomegeoserver
@@ -119,7 +120,7 @@ services:
       restart: on-failure
       depends_on:
         master:
-          condition: service_healthy
+          condition: service_started
         db:
           condition: service_healthy
         broker1:

@@ -66,14 +66,15 @@ services:
         - BROKER_URL=tcp://broker1:61616
         - READONLY=disabled
         - TOGGLE_MASTER=true
-        - TOGGLE_SLAVE=false
-        - EMBEDDED_BROKER=disabled
+        - TOGGLE_SLAVE=true
         - RUN_AS_ROOT=TRUE
         - GEOSERVER_ADMIN_USER=admin
         - GEOSERVER_ADMIN_PASSWORD=myawesomegeoserver
         - STABLE_EXTENSIONS=
         - COMMUNITY_EXTENSIONS=jms-cluster-plugin,mbtiles
         - SAMPLE_DATA=true
+        - RANDOMSTRING=23bd87cfa327d47e-master
+        - INSTANCE_STRING=ac3bcba2fa7d989678a01ef4facc4173010cd8b40d2e5f5a8d18d5f863ca976f-master
         # prevent some errors the option below
         #- ADDITIONAL_JAVA_STARTUP_OPTIONS="--add-opens=java.base/jdk.internal.misc=ALL-UNNAMED"
       restart: on-failure
@@ -83,7 +84,7 @@ services:
         broker1:
           condition: service_healthy
       healthcheck:
-        test: "curl --fail --silent --write-out 'HTTP CODE : %{http_code}\n' --output /dev/null -u admin:'myawesomegeoserver' http://localhost:8080/geoserver/rest/about/version.xml"
+        test: curl --fail -s http://localhost:8080/ || exit 1
         interval: 1m30s
         timeout: 10s
         retries: 3
@@ -102,7 +103,7 @@ services:
         - SSL_MODE=ALLOW
         - BROKER_URL=tcp://broker1:61616
         - READONLY=enabled
-        - TOGGLE_MASTER=false
+        - TOGGLE_MASTER=true
         - TOGGLE_SLAVE=true
         - EMBEDDED_BROKER=disabled
         - RUN_AS_ROOT=TRUE
@@ -111,18 +112,20 @@ services:
         - STABLE_EXTENSIONS=
         - COMMUNITY_EXTENSIONS=jms-cluster-plugin,mbtiles
         - SAMPLE_DATA=true
+        - RANDOMSTRING=23bd87cfa327d47e-node
+        - INSTANCE_STRING=ac3bcba2fa7d989678a01ef4facc4173010cd8b40d2e5f5a8d18d5f863ca976f-node
         # prevent some errors the option below
         #- ADDITIONAL_JAVA_STARTUP_OPTIONS="--add-opens=java.base/jdk.internal.misc=ALL-UNNAMED"
       restart: on-failure
       depends_on:
         master:
-          condition: service_started
+          condition: service_healthy
         db:
           condition: service_healthy
         broker1:
           condition: service_healthy
       healthcheck:
-        test: "curl --fail --silent --write-out 'HTTP CODE : %{http_code}\n' --output /dev/null -u admin:'myawesomegeoserver' http://localhost:8080/geoserver/rest/about/version.xml"
+        test: curl --fail -s http://localhost:8080/ || exit 1
         interval: 1m30s
         timeout: 10s
         retries: 3
@@ -150,6 +153,9 @@ services:
         - STABLE_EXTENSIONS=
         - COMMUNITY_EXTENSIONS=jms-cluster-plugin,mbtiles
         - SAMPLE_DATA=true
+        - RANDOMSTRING=23bd87cfa327d47e-node2
+        - INSTANCE_STRING=ac3bcba2fa7d989678a01ef4facc4173010cd8b40d2e5f5a8d18d5f863ca976f-node2
+        
         # prevent some errors the option below
         #- ADDITIONAL_JAVA_STARTUP_OPTIONS="--add-opens=java.base/jdk.internal.misc=ALL-UNNAMED"
       restart: on-failure
@@ -163,7 +169,7 @@ services:
         broker1:
           condition: service_healthy
       healthcheck:
-        test: "curl --fail --silent --write-out 'HTTP CODE : %{http_code}\n' --output /dev/null -u admin:'myawesomegeoserver' http://localhost:8080/geoserver/rest/about/version.xml"
+        test: curl --fail -s http://localhost:8080/ || exit 1
         interval: 1m30s
         timeout: 10s
         retries: 3
@@ -185,41 +191,15 @@ services:
         timeout: 10s
       depends_on:
           master:
-            condition: service_started
+            condition: service_healthy
           node:
-            condition: service_started
+            condition: service_healthy
           node2:
-            condition: service_started
+            condition: service_healthy
           broker1:
             condition: service_healthy
       networks:
         - gscluster
-    # nginx:
-    #   image: nginx:latest
-    #   build:
-    #     context: nginx
-    #     dockerfile: Dockerfile
-    #   ports:
-    #     - "80:80"
-    #   healthcheck:
-    #     test: curl --fail -s http://localhost || exit 1
-    #     interval: 1m
-    #     retries: 5
-    #     start_period: 20s
-    #     timeout: 10s
-    #   depends_on:
-    #     master:
-    #       condition: service_started
-    #     node:
-    #       condition: service_started
-    #     node2:
-    #       condition: service_started
-    #     db:
-    #       condition: service_healthy
-    #     broker1:
-    #       condition: service_healthy
-    #   networks:
-    #       - gscluster
-
+   
    
 

@@ -1,0 +1,19 @@
+yourdomain.com {
+    # Load balancing with sticky sessions
+    reverse_proxy {
+        to master:8080 node:8080 node2:8080
+        lb_policy cookie # Sticky session using cookies
+        lb_try_duration 30s
+    }
+
+    # Automatic HTTPS with Let's Encrypt (HTTP challenge)
+    tls {
+        # No need for DNS challenge, HTTP challenge will be used
+    }
+
+    # Optional: Redirect HTTP to HTTPS
+    @http {
+        protocol http
+    }
+    redir @http https://{host}{uri}
+}

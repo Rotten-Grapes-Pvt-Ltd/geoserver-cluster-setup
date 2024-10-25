@@ -65,6 +65,9 @@ services:
         - SSL_MODE=ALLOW
         - BROKER_URL=tcp://broker1:61616
         - READONLY=enabled
+        - HTTP_PROXY_NAME=dev-geo.mapilio.com
+        - HTTP_SCHEME=https
+        - ROOT_WEBAPP_REDIRECT=true
         - SSL=true
         - TOGGLE_MASTER=true
         - TOGGLE_SLAVE=true
@@ -107,6 +110,9 @@ services:
         - SSL=true
         - BROKER_URL=tcp://broker1:61616
         - READONLY=enabled
+        - HTTP_PROXY_NAME=dev-geo.mapilio.com
+        - HTTP_SCHEME=https
+        - ROOT_WEBAPP_REDIRECT=true
         - TOGGLE_MASTER=true
         - TOGGLE_SLAVE=true
         - EMBEDDED_BROKER=disabled
@@ -151,6 +157,9 @@ services:
         - READONLY=enabled
         - TOGGLE_MASTER=false
         - TOGGLE_SLAVE=true
+        - HTTP_PROXY_NAME=dev-geo.mapilio.com
+        - HTTP_SCHEME=https
+        - ROOT_WEBAPP_REDIRECT=true
         - SSL=true
         - EMBEDDED_BROKER=disabled
         - RUN_AS_ROOT=TRUE

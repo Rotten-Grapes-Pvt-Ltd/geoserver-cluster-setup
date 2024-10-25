@@ -1,12 +1,7 @@
 {
-    # Turn on all debug log
-    debug
-    log {
-        output stdout
-        level DEBUG
-    }
+    email krishna@rottengrapes.tech
 }
-:80
+dev-geo.mapilio.com { 
 reverse_proxy master:8080 node:8080 node2:8080 {
     # header_up Host                {host}
     # header_up Origin              {host}
@@ -18,4 +13,5 @@ reverse_proxy master:8080 node:8080 node2:8080 {
     # header_up X-Forwarded-Proto   {scheme}
 
     lb_policy cookie
+}
 }

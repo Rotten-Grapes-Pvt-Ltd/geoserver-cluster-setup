@@ -7,7 +7,7 @@
 		level ERROR
 	}
 }
-ec2-18-222-61-127.us-east-2.compute.amazonaws.com {
+dev-geo.mapilio.com {
 	reverse_proxy master:8080 node:8080 node2:8080 {
 		# header_up Host                {host}
 		# header_up Origin              {host}
